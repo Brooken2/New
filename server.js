@@ -15,7 +15,7 @@ var pool = new Pool({
   host: 'localhost',
   database: 'goaltracker',
   password: 'tpass',
-  port: process.env.postgres://dkmodrusgsdnay:907b2ac7f47ef9be97314029cbe448b24b208ed7bb43dc45405dd304031c5649@ec2-54-221-207-184.compute-1.amazonaws.com:5432/de95klcch16tkc || 5432
+  port: process.env.DATABASE_URL || 5432
 });
 
 
