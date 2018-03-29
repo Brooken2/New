@@ -9,7 +9,7 @@ const saltRounds = 10;
 
 var app = express();
 
-const {Pool} =  require('pg');
+const {Pool} =  require('pg-pool');
 var pool = new Pool({
   user: 'tuser',
   host: 'localhost',
@@ -41,13 +41,9 @@ app.set('views', path.join(__dirname, 'views'));
 app.post('/login', handleLogin);
 app.post('/logout', handleLogout);
 
-app.get('/', function (req, res){
-	  res.send('Hello World')
-  });
-
-  app.listen(app.get('port'), function(){
+app.listen(app.get('port'), function(){
 		console.log('Listening on Port: ' + app.get('port'))
-	});
+});
 	
 	
 function handleLogin(req, res){
