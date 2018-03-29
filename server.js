@@ -11,13 +11,13 @@ var app = express();
 
 const {Pool} =  require('pg');
 var pool = new Pool({
-	connectionString: process.env.DATABASE_URL,
-	ssl: true,
-  /*user: 'tuser',
+	/*connectionString: process.env.DATABASE_URL,
+	ssl: true,*/
+  user: 'tuser',
   host: 'localhost',
   database: 'goaltracker',
   password: 'tpass',
-  port: process.env.PORT || 5432*/
+  port: process.env.PORT || 5432
 });
 
 
@@ -98,7 +98,7 @@ function addGoals(req, res){
 	var name = req.query.gname;
 	var endDate = req.query.endDate;
 	var des = req.query.desciption;
-	console.log(name + endDate + des + userid);
+	//console.log(name + endDate + des + userid);
 		
 	pool.connect(function (err, client, release) {
   		if (err) {
@@ -109,7 +109,8 @@ function addGoals(req, res){
     				if (err) {
       				return console.error('Error executing query', err.stack);
     				}
-			res.json(result.rows);
+			//res.json(result.rows);
+			res.redirect('/homePage');
   		});
 	});	
 }

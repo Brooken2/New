@@ -1,29 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Test Form</title>
+	<title>Goal Tracker</title>
 	<script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
+	<script>
+	$(document).ready(function(){
+    		$("#btnLogin").click(function(){
+        		$("#loginHide").hide(1000);
+				$("#loginHide2").hide(1000);
+    		});
+			$("#btnLogout").click(function(){
+				$("#loginHide").show(1000);
+				$("#goalPage").hide(1000);
+			});
+	});
+	</script>
 	<script src="validate.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
-<div>
+<div class="container">
+  <div class="jumbotron">
+    <h1>Welcome to Goal Tracker!</h1> 
+    <p id="loginHide">Please Login</p> 
+  </div>
+  <div id="loginHide2">
 	<input type="text" id="username" placeholder="username"><br>
 	<input type="password" id="password" placeholder="password"><br>
-	<button onclick="login()">Log in</button>
-	<button onclick="logout()">Log out</button><br>
-	<br>
-	<div id="status"></div>
+	<button id="btnLogin" onclick="login()">Log in</button>
+	</div>
 </div>
 
+<button id="btnLogout" onclick="logout()">Log out</button><br>
+<div id="status"></div>
 
+<div id="goalPage">
 <div id="div1"></div>
 <div id="addingNew"></div>
-
 <div id="addingNewGoals"></div>
-
+</div>
 
 </body>
 </html>
