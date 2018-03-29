@@ -11,11 +11,13 @@ var app = express();
 
 const {Pool} =  require('pg');
 var pool = new Pool({
-  user: 'tuser',
+	connectionString: process.env.DATABASE_URL,
+	ssl: true,
+ /* user: 'tuser',
   host: 'localhost',
   database: 'goaltracker',
   password: 'tpass',
-  port: process.env.DATABASE_URL || 5432
+  port: 5432*/
 });
 
 
