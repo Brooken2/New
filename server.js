@@ -9,7 +9,7 @@ const saltRounds = 10;
 
 var app = express();
 
-const {Pool} =  require('pg-pool');
+const {Pool} =  require('pg');
 var pool = new Pool({
   user: 'tuser',
   host: 'localhost',
