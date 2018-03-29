@@ -13,11 +13,11 @@ const {Pool} =  require('pg');
 var pool = new Pool({
 	connectionString: process.env.DATABASE_URL,
 	ssl: true,
- /* user: 'tuser',
+  /*user: 'tuser',
   host: 'localhost',
   database: 'goaltracker',
   password: 'tpass',
-  port: 5432*/
+  port: process.env.PORT || 5432*/
 });
 
 
@@ -39,9 +39,13 @@ app.use(session({cookieName: 'session', secret: 'user-session', duration: durati
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', __dirname + '/views');
 app.post('/login', handleLogin);
 app.post('/logout', handleLogout);
+app.get('/getGoals', getGoals);
+app.get('/addGoals', addGoals);
+app.get('/getUser', getUser);
+app.get('/homePage', homeGoals);
 
 app.listen(app.get('port'), function(){
 		console.log('Listening on Port: ' + app.get('port'))
@@ -53,11 +57,13 @@ function handleLogin(req, res){
 
 	console.log('made it to handleLogin');
 	
-	pool.query("SELECT username, password FROM users", (err, response) => {
+	pool.query("SELECT id, username, password FROM users", (err, response) => {
 			if (req.body.username == response.rows[0].username && req.body.password == response.rows[0].password){
-				console.log('made it into the if statement');
+				console.log(response.rows[0].id);
 				result = {success: true};
 				req.session.user = req.body.username;
+				req.session.id = response.rows[0].id;
+				//res.redirect('/homePage');
 				res.send(result);
 			}
 			else{
@@ -77,6 +83,65 @@ function handleLogout(req, res){
 		res.send(result);
 	}
 	
+}
+
+
+function homeGoals(req, res){
+	console.log('home page has been called');
+	res.send('homePage.html');
+}
+
+
+function addGoals(req, res){
+	console.log('Add Goals');
+	var userid = req.session.id;
+	var name = req.query.gname;
+	var endDate = req.query.endDate;
+	var des = req.query.desciption;
+	console.log(name + endDate + des + userid);
+		
+	pool.connect(function (err, client, release) {
+  		if (err) {
+  				return console.error('Error acquiring client', err.stack);
+		}
+ 		client.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ('"+ name + "', '" + endDate + "', '"  + des +"', '" +userid  + "')"  , function (err, result) {
+    				client.release();
+    				if (err) {
+      				return console.error('Error executing query', err.stack);
+    				}
+			res.json(result.rows);
+  		});
+	});	
+}
+
+function getUser(req, res){
+	console.log('Users have been called');
+	if(req.session.user){
+		var id = req.session.id;	
+		console.log('requested id: ' + id);
+	
+		getGoals(id, function(err, result){	
+			res.json(result);
+		});
+	}
+	else{
+		console.log('redirect to login page');
+	}
+}
+
+function getGoals(id, callback){
+	console.log('GET GOALS is CALLED  WITH id: ' + id);
+	var value = id;
+	pool.query("SELECT * FROM goals WHERE userid=$1",[value], function(err, res){
+		if(err){
+			throw err;
+		}
+		else {
+			console.log('back from DB with: ' +  JSON.stringify(res.rows));
+			var results = JSON.stringify(res.rows);
+			callback(null, results);
+		}
+	});
 }
 
 	
