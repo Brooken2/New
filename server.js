@@ -44,6 +44,9 @@ app.post('/login', handleLogin);
 app.post('/logout', handleLogout);
 app.get('/getGoals', getGoals);
 app.get('/addGoals', addGoals);
+app.get('/addedGoals', function (req, res) {
+	res.send('<h1>A New Goal Was Added!</h1> <br>');
+});
 app.get('/getUser', getUser);
 app.get('/homePage', homeGoals);
 
@@ -110,7 +113,7 @@ function addGoals(req, res){
       				return console.error('Error executing query', err.stack);
     				}
 			//res.json(result.rows);
-			res.redirect('/homePage');
+			return res.redirect('/addedGoals');
   		});
 	});	
 }

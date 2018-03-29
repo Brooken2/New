@@ -2,46 +2,54 @@
 <html>
 <head>
 	<title>Goal Tracker</title>
+	<meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 	<script
   src="https://code.jquery.com/jquery-3.2.1.min.js"
   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
 	<script>
 	$(document).ready(function(){
-    		$("#btnLogin").click(function(){
-        		$("#loginHide").hide(1000);
-				$("#loginHide2").hide(1000);
-    		});
-			$("#btnLogout").click(function(){
-				$("#loginHide").show(1000);
-				$("#goalPage").hide(1000);
-			});
+    	$("#btnLogin").click(function(){
+        	$("#loginHide").hide(1000);
+			$("#loginHide2").hide(1000);
+			$("#goalPage").show(1000);
+    	});
+		$("#btnLogout").click(function(){
+			$("#loginHide").show(1000);
+			$("#loginHide2").show(1000);
+			$("#goalPage").hide(1000);
+		});
 	});
 	</script>
 	<script src="validate.js"></script>
-	<link rel="stylesheet" type="text/css" href="css/style.css" />
 </head>
 <body>
 <div class="container">
-  <div class="jumbotron">
+  <div class="page-header">
     <h1>Welcome to Goal Tracker!</h1> 
-    <p id="loginHide">Please Login</p> 
-  </div>
-  <div id="loginHide2">
-	<input type="text" id="username" placeholder="username"><br>
-	<input type="password" id="password" placeholder="password"><br>
 	<button id="btnLogin" onclick="login()">Log in</button>
+	<button id="btnLogout" onclick="logout()">Log out</button>
+	<button id="btnCreate" onclick="createUser()">Create New User</button>
+  </div>
+  <h3 id="loginHide">Please Login</h3> 
+  <div id="loginHide2">
+	User Name: <input type="text" id="username" placeholder="username"><br>
+	Password :  <input type="password" id="password" placeholder="password"><br>
+	</div>
+	
+	<div id="status"></div>
+
+	<div id="goalPage">
+	<div id="div1"></div>
+	<div id="addingNew"></div>
+	<div id="addingNewGoals"></div>
 	</div>
 </div>
 
-<button id="btnLogout" onclick="logout()">Log out</button><br>
-<div id="status"></div>
-
-<div id="goalPage">
-<div id="div1"></div>
-<div id="addingNew"></div>
-<div id="addingNewGoals"></div>
-</div>
 
 </body>
 </html>
