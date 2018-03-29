@@ -60,13 +60,13 @@ function handleLogin(req, res){
 				console.log('made it into the if statement');
 				result = {success: true};
 				req.session.user = req.body.username;
+				res.send(result);
 			}
 			else{
 				result ={success: false};
+				res.send(result);
 			}
 	});
-
-	res.json(result);
 }
 
 function handleLogout(req, res){
@@ -76,9 +76,8 @@ function handleLogout(req, res){
 	if (req.session.user) {
 		req.session.destroy();
 		result = {success: true};
+		res.send(result);
 	}
-
-	response.json(result);
 	
 }
 
