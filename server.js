@@ -2,6 +2,7 @@ var express = require('express');
 const path = require('path');
 var bodyParser = require('body-parser');
 var session = require('client-sessions');
+var bcrypt = require('bcrypt');
 
 const duration = 30 * 60 * 1000;
 const active = 5 * 60 * 1000;
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.set('views', __dirname + '/views');
 app.post('/login', handleLogin);
 app.post('/logout', handleLogout);
+app.post('/createUser', handleCreateAccount);
 app.get('/getGoals', getGoals);
 app.get('/addGoals', addGoals);
 app.get('/addedGoals', function (req, res) {
@@ -58,34 +60,74 @@ app.listen(app.get('port'), function(){
 function handleLogin(req, res){
 	var result;
 
-	console.log('made it to handleLogin');
+	var username = req.body.username;
 	
-	pool.query("SELECT id, username, password FROM users", (err, response) => {
-			if (req.body.username == response.rows[0].username && req.body.password == response.rows[0].password){
-				console.log(response.rows[0].id);
-				result = {success: true};
-				req.session.user = req.body.username;
-				req.session.id = response.rows[0].id;
-				//res.redirect('/homePage');
-				res.send(result);
+	console.log('made it to handle Login');
+	
+	pool.query("SELECT id, username, password FROM users WHERE username = $1",[username], (err, response) => {
+		console.log("did we make it in the query");
+		if(err){
+			console.log('Error loggin in to the database');
+			res.send("error");
+		}
+		else if(response){
+			console.log(req.body.username);
+			console.log(response.rows[0].username);
+			if(req.body.username == response.rows[0].username){
+				bcrypt.compare(req.body.password, response.rows[0].password, function(err, goodPass){
+					console.log(goodPass);
+					if(goodPass == true){
+						console.log(response.rows[0].id);
+						result = {success: true};
+						req.session.user = req.body.username;
+						req.session.id = response.rows[0].id;
+						//res.redirect('/homePage');
+						res.send(result);
+					}
+				});
 			}
 			else{
-				result ={success: false};
-				res.send(result);
+					result ={success: false};
+					res.send(result);
 			}
+		}
 	});
+}
+ 
+function handleCreateAccount(req, res){
+	var result;
+	console.log('made it to create account');
+	
+	if(req.body.displayName){
+		bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
+			var params = [req.body.username, hash, req.body.displayName];
+			pool.query("INSERT INTO users (username, password, display_name ) VALUES ($1,$2, $3)", params, (err) => {});
+			var result = {
+				success: true
+			};
+		res.send(result);
+		});
+	}
+	else{
+		result ={success: false}
+		res.send(result);
+	}
 }
 
 function handleLogout(req, res){
 	var result = {success: false};
 
 	// We should do better error checking here to make sure the parameters are present
-	if (req.session.user) {
-		req.session.destroy();
-		result = {success: true};
-		res.send(result);
-	}
+	req.session.username = undefined;
+	req.session.password = undefined;
+	req.session.destroy();
+	result = {success: true};
+	res.send(result);
 	
+}
+
+function handleNewUser(req, res){
+	var result;
 }
 
 

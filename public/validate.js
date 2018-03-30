@@ -8,7 +8,7 @@ function login() {
 	
 	var params = {
 		username: username,
-		password: password
+		password: password,
 	};
 
 	$.post("/login", params, function(result) {
@@ -17,6 +17,30 @@ function login() {
 			redir();
 		} else {
 			$("#status").text("Error logging in.");
+		}
+	});
+}
+
+function createUser(){
+
+	var username = $("#username1").val();
+	var password = $("#password1").val();
+	var displayName = $("#displayName").val();
+
+	console.log('We made it to the CreateUser() fucntion');
+	
+	var params = {
+		username: username,
+		password: password,
+		displayName: displayName
+	};
+
+	$.post("/createUser", params, function(result) {
+		if (result && result.success) {
+			console.log('made it here');
+			redir();
+		} else {
+			$("#status").text("Error Creating User in.");
 		}
 	});
 }
