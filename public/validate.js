@@ -95,7 +95,7 @@ function updatePage(results){
         + "<input type='date' class='form-control' id='endDate' name='endDate' placeholder='Select an end date for your goal'/>"
 		+ "<label for='discription'>Description:</label>"
         + "<textarea id='desciption' class='form-control'name='desciption' placeholder='What did you want to accomplish?'></textarea>"
-		+ "<input type='submit' class='btn btn-primary' value='Add Goal' /> </fieldset></form></div>";
+		+ "<input type='submit' class='btn btn-primary' value='Add Goal' /> </fieldset></form></div><br><br><br><br>";
 	
 	document.getElementById("addingNewGoals").innerHTML = addGoal;
 	
