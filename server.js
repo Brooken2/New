@@ -14,11 +14,11 @@ const {Pool} =  require('pg');
 var pool = new Pool({
 	connectionString: process.env.DATABASE_URL,
 	ssl: true,
- /* user: 'tuser',
-  host: 'localhost',
-  database: 'goaltracker',
-  password: 'tpass',
-  port: process.env.PORT || 5432*/
+	/*user: 'tuser',
+	host: 'localhost',
+	database: 'goaltracker',
+	password: 'tpass',
+	port: process.env.PORT || 5432*/
 });
 
 
@@ -59,10 +59,7 @@ app.listen(app.get('port'), function(){
 	
 function handleLogin(req, res){
 	var result;
-
 	var username = req.body.username;
-	
-	console.log('made it to handle Login');
 	
 	pool.query("SELECT id, username, password FROM users WHERE username = $1",[username], (err, response) => {
 		console.log("did we make it in the query");
@@ -71,8 +68,6 @@ function handleLogin(req, res){
 			res.send("error");
 		}
 		else if(response){
-			console.log(req.body.username);
-			console.log(response.rows[0].username);
 			if(req.body.username == response.rows[0].username){
 				bcrypt.compare(req.body.password, response.rows[0].password, function(err, goodPass){
 					console.log(goodPass);
@@ -101,11 +96,24 @@ function handleCreateAccount(req, res){
 	if(req.body.displayName){
 		bcrypt.hash(req.body.password, saltRounds, function(err, hash) {
 			var params = [req.body.username, hash, req.body.displayName];
-			pool.query("INSERT INTO users (username, password, display_name ) VALUES ($1,$2, $3)", params, (err) => {});
-			var result = {
-				success: true
-			};
-		res.send(result);
+			pool.query("INSERT INTO users (username, password, display_name) VALUES ($1,$2, $3)", params, (err, response) => {
+				if(err){
+					console.log('error in our create user account');
+				}
+				else{
+					var result = {success: true};
+					req.session.user = req.body.username;
+					var varia = req.body.username;
+					pool.query("SELECT id FROM users WHERE username = $1", [varia], (err, response) => {
+						if(err){
+							console.log('error in the finding of username');
+						}else{
+							req.session.id = response.rows[0].id;
+							res.send(result);
+						}
+					});
+				}
+			});
 		});
 	}
 	else{

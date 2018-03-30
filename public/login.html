@@ -23,6 +23,11 @@
 			$("#loginHide2").show(1000);
 			$("#goalPage").hide(1000);
 		});
+		$("#btnCreate").click(function(){
+			$("#loginHide").hide(1000);
+			$("#loginHide2").hide(1000);
+			$("#goalPage").show(1000);
+		});
 	});
 	</script>
 	<script src="validate.js"></script>
@@ -39,6 +44,7 @@
   <div id="loginHide2">
 	User Name: <input type="text" id="username" placeholder="username"><br>
 	Password :  <input type="password" id="password" placeholder="password"><br>
+	<div id="status"></div>
 	
 	
 	<div id="createUser">
@@ -48,8 +54,7 @@
 	Display Name: <input type="text" id="displayName" placeholder="display name">
 	</div>
 </div>
-	
-	<div id="status"></div>
+
 
 	<div id="goalPage">
 	<div id="div1"></div>
