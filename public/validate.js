@@ -89,12 +89,12 @@ function updatePage(results){
 		"<form action='/addGoals' method='get'>"
 		+ "<fieldset>" 
 		+ "<label for='gname'>Goal Name:</label>"
-        + "<input type='text' id='name' name='gname' placeholder='Enter your goals name' />"
+        + "<input type='text' class='form-control' id='name' name='gname' placeholder='Enter your goals name' />"
 		+ "<label for=endDate>End Date:</label>"
-        + "<input type='date' id='endDate' name='endDate' placeholder='Select an end date for your goal'/>"
+        + "<input type='date' class='form-control' id='endDate' name='endDate' placeholder='Select an end date for your goal'/>"
 		+ "<label for='discription'>Description:</label>"
-        + "<textarea id='desciption' name='desciption' placeholder='What did you want to accomplish?'></textarea>"
-		+ "<input type='submit' value='Add Goal' /> </fieldset></form>";
+        + "<textarea id='desciption' class='form-control'name='desciption' placeholder='What did you want to accomplish?'></textarea>"
+		+ "<input type='submit' class='btn btn-primary' value='Add Goal' /> </fieldset></form>";
 	
 	document.getElementById("addingNewGoals").innerHTML = addGoal;
 	
