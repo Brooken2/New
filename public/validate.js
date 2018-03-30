@@ -76,10 +76,12 @@ function updatePage(results){
 	var out = "";
 	var content ="";
 	var i;
-	out += '<h1>Welcome To Your Goals</h1> ';
+	out += "<div class='container'><h2> Your Goal List</h2>";
+	content += "<div class='list-group'>";
 	for(i = 0; i < listJson.length; i++){
-		content +=  '<div>' + listJson[i].goalname + ': ' + listJson[i].description + '<br>Due Date: '+ listJson[i].enddate + '</div>';
+		content +=  "<a href='#' class='list-group-item'><h4 class='list-group-item-heading'" + listJson[i].goalname + "</h4><p class='list-group-item-text'>" + listJson[i].description + 'Due Date: '+ listJson[i].enddate + "</p></a>";
 	}
+	content += "</div></div>"
 	document.getElementById("div1").innerHTML = out;
 	document.getElementById("addingNew").innerHTML = content;
 	
