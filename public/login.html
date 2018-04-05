@@ -7,29 +7,8 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-	<script
-  src="https://code.jquery.com/jquery-3.2.1.min.js"
-  integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
   crossorigin="anonymous"></script>
-	<script>
-	$(document).ready(function(){
-    	$("#btnLogin").click(function(){
-        	$("#loginHide").hide(1000);
-			$("#loginHide2").hide(1000);
-			$("#goalPage").show(1000);
-    	});
-		$("#btnLogout").click(function(){
-			$("#loginHide").show(1000);
-			$("#loginHide2").show(1000);
-			$("#goalPage").hide(1000);
-		});
-		$("#btnCreate").click(function(){
-			$("#loginHide").hide(1000);
-			$("#loginHide2").hide(1000);
-			$("#goalPage").show(1000);
-		});
-	});
-	</script>
 	<script src="validate.js"></script>
 </head>
 <body style="background-color:coral;">
@@ -39,6 +18,39 @@
 	<button id="btnLogin" class="btn btn-primary" onclick="login()">Log in</button>
 	<button id="btnLogout" class="btn btn-danger" onclick="logout()">Log out</button>
 	<button id="btnCreate" class="btn btn-success" onclick="createUser()">Create New User</button>
+	<script>
+	$(document).ready(function(){
+		$("#btnLogin").click(function(){
+			if(typeof(Storage) !== "undefined"){
+				$("#loginHide").hide(1000);
+				$("#loginHide2").hide(1000);
+				$("#goalPage").show(1000);
+			}
+			else{
+				$("#loginHide").show(1000);
+				$("#loginHide2").show(1000);
+				$("#goalPage").hide(1000);
+			}
+		});
+		$("#btnLogout").click(function(){
+			$("#loginHide").show(1000);
+			$("#loginHide2").show(1000);
+			$("#goalPage").hide(1000);
+		});
+		$("#btnCreate").click(function(){
+			if(typeof(Storage) !== "undefined"){
+				$("#loginHide").hide(1000);
+				$("#loginHide2").hide(1000);
+				$("#goalPage").show(1000);
+			}
+			else{
+				$("#loginHide").show(1000);
+				$("#loginHide2").show(1000);
+				$("#goalPage").hide(1000);
+			}
+		});
+	});
+	</script>
   </div>
   <h3 id="loginHide">Please Login</h3> 
   <div id="loginHide2">

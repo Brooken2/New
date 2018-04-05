@@ -12,13 +12,13 @@ var app = express();
 
 const {Pool} =  require('pg');
 var pool = new Pool({
-	connectionString: process.env.DATABASE_URL,
-	ssl: true,
-	/*user: 'tuser',
+	/*connectionString: process.env.DATABASE_URL,
+	ssl: true,*/
+	user: 'tuser',
 	host: 'localhost',
 	database: 'goaltracker',
 	password: 'tpass',
-	port: process.env.PORT || 5432*/
+	port: process.env.PORT || 5432
 });
 
 
@@ -47,7 +47,7 @@ app.post('/createUser', handleCreateAccount);
 app.get('/getGoals', getGoals);
 app.get('/addGoals', addGoals);
 app.get('/addedGoals', function (req, res) {
-	res.send('<h1>A New Goal Was Added!</h1> <br>');
+	res.redirect('/login.html');
 });
 app.get('/getUser', getUser);
 app.get('/homePage', homeGoals);
