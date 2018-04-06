@@ -47,10 +47,10 @@ app.post('/createUser', handleCreateAccount);
 app.get('/getGoals', getGoals);
 app.get('/addGoals', addGoals);
 app.get('/addedGoals', function (req, res) {
+	
 	res.redirect('/login.html');
 });
 app.get('/getUser', getUser);
-//app.get('/homePage', homeGoals);
 
 app.listen(app.get('port'), function(){
 		console.log('Listening on Port: ' + app.get('port'))
@@ -134,16 +134,6 @@ function handleLogout(req, res){
 	
 }
 
-/*function handleNewUser(req, res){
-	var result;
-}*/
-
-
-/*function homeGoals(req, res){
-	console.log('home page has been called');
-	res.send('homePage.html');
-}*/
-
 
 function addGoals(req, res){
 	console.log('Add Goals');
@@ -151,17 +141,21 @@ function addGoals(req, res){
 	var name = req.query.gname;
 	var endDate = req.query.endDate;
 	var des = req.query.desciption;
-		
+	var result;
 	pool.connect(function (err, client, release) {
   		if (err) {
-  				return console.error('Error acquiring client', err.stack);
+  			console.error('Error acquiring client', err.stack);
 		}
  		client.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ('"+ name + "', '" + endDate + "', '"  + des +"', '" +userid  + "')"  , function (err, result) {
     				client.release();
-    				if (err) {
-      				return console.error('Error executing query', err.stack);
-    				}
-			return res.redirect('/addedGoals');
+    			if (err) {
+					result = {success: false};
+					res.send(result);
+      				console.error('Error executing query', err.stack);
+    			}
+			result = {success: true};
+			res.send(result);
+			//res.redirect('/addedGoals');
   		});
 	});	
 }

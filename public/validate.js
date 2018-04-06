@@ -101,6 +101,17 @@ function updatePage(results){
 	
 }
 
+function addnewgoal(){
+	$.post("/addGoal", function(result){
+		if (result && result.success) {
+			console.log('made it here');
+			redir();
+		} else {
+			$("#status").text("Error Creating User in.");
+		}
+	});
+}
+
 function logout() {
 	$.post("/logout", function(result) {
 		if (result && result.success) {
