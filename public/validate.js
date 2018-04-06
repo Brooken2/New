@@ -101,9 +101,6 @@ function updatePage(results){
 	
 }
 
-function setGoal(){
-}
-
 function logout() {
 	$.post("/logout", function(result) {
 		if (result && result.success) {
