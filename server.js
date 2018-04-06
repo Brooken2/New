@@ -12,13 +12,13 @@ var app = express();
 
 const {Pool} =  require('pg');
 var pool = new Pool({
-	connectionString: process.env.DATABASE_URL,
-	ssl: true,
-	/*user: 'tuser',
+	//connectionString: process.env.DATABASE_URL,
+	//ssl: true,
+	user: 'tuser',
 	host: 'localhost',
 	database: 'goaltracker',
 	password: 'tpass',
-	port: process.env.PORT || 5432*/
+	port: process.env.PORT || 5432
 });
 
 
@@ -45,7 +45,7 @@ app.post('/login', handleLogin);
 app.post('/logout', handleLogout);
 app.post('/createUser', handleCreateAccount);
 app.get('/getGoals', getGoals);
-app.get('/addGoals', addGoals);
+app.post('/addGoals', addGoals);
 app.get('/addedGoals', function (req, res) {
 	
 	res.redirect('/login.html');
@@ -76,7 +76,6 @@ function handleLogin(req, res){
 						result = {success: true};
 						req.session.user = req.body.username;
 						req.session.id = response.rows[0].id;
-						//res.redirect('/homePage');
 						res.send(result);
 					}
 				});
@@ -138,24 +137,23 @@ function handleLogout(req, res){
 function addGoals(req, res){
 	console.log('Add Goals');
 	var userid = req.session.id;
-	var name = req.query.gname;
-	var endDate = req.query.endDate;
-	var des = req.query.desciption;
 	var result;
+	var params = [req.body.gname, req.body.endDate, req.body.desciption, userid];
 	pool.connect(function (err, client, release) {
   		if (err) {
   			console.error('Error acquiring client', err.stack);
 		}
- 		client.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ('"+ name + "', '" + endDate + "', '"  + des +"', '" +userid  + "')"  , function (err, result) {
-    				client.release();
+ 		pool.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ($1, $2, $3, $4)", params, function (err, result) { //+ name + "', '" + endDate + "', '"  + des +"', '" +userid  + "')"  ,
+    				//client.release();
     			if (err) {
 					result = {success: false};
 					res.send(result);
       				console.error('Error executing query', err.stack);
     			}
+			console.log('This is in my ADD GOALS');
 			result = {success: true};
 			res.send(result);
-			//res.redirect('/addedGoals');
+			//res.redirect('/login');
   		});
 	});	
 }

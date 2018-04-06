@@ -45,12 +45,34 @@ function createUser(){
 	});
 }
 
+function addGoals(){
+	var gname = $("#gname").val();
+	var endDate = $("#endDate").val();
+	var desciption = $("#desciption").val();
+	
+	var params = {
+		gname: gname,
+		endDate: endDate,
+		desciption: desciption
+	};
+	
+	$.post("/addGoals", params, function(result){
+		if (result && result.success) {
+			console.log('made it here to add new goal');
+			redir();
+		} else {
+			$("#status").text("Error Creating new Goal in.");
+		}
+	});
+}
+
 function redir(){
 	var xmlhttp = new XMLHttpRequest();
 
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == XMLHttpRequest.DONE) {
 			if (xmlhttp.status == 200){ 
+				console.log("we are here in the redir");
 				console.log(this.responseText);
 				updatePage(this.responseText);
 			}
@@ -87,7 +109,7 @@ function updatePage(results){
 	
 	var addGoal = 
 		"<div class='container'><h2>Add A New Goal</h2>"
-		+ "<form action='/addGoals' method='get'>"
+		+ "<form action='/addGoals' method='post'>"
 		+ "<fieldset>" 
 		+ "<label for='gname'>Goal Name:</label>"
         + "<input type='text' class='form-control' id='name' name='gname' placeholder='Enter your goals name' />"
@@ -99,17 +121,6 @@ function updatePage(results){
 	
 	document.getElementById("addingNewGoals").innerHTML = addGoal;
 	
-}
-
-function addnewgoal(){
-	$.post("/addGoal", function(result){
-		if (result && result.success) {
-			console.log('made it here');
-			redir();
-		} else {
-			$("#status").text("Error Creating User in.");
-		}
-	});
 }
 
 function logout() {
