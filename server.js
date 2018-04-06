@@ -50,7 +50,7 @@ app.get('/addedGoals', function (req, res) {
 	res.redirect('/login.html');
 });
 app.get('/getUser', getUser);
-app.get('/homePage', homeGoals);
+//app.get('/homePage', homeGoals);
 
 app.listen(app.get('port'), function(){
 		console.log('Listening on Port: ' + app.get('port'))
@@ -134,15 +134,15 @@ function handleLogout(req, res){
 	
 }
 
-function handleNewUser(req, res){
+/*function handleNewUser(req, res){
 	var result;
-}
+}*/
 
 
-function homeGoals(req, res){
+/*function homeGoals(req, res){
 	console.log('home page has been called');
 	res.send('homePage.html');
-}
+}*/
 
 
 function addGoals(req, res){
@@ -151,7 +151,6 @@ function addGoals(req, res){
 	var name = req.query.gname;
 	var endDate = req.query.endDate;
 	var des = req.query.desciption;
-	//console.log(name + endDate + des + userid);
 		
 	pool.connect(function (err, client, release) {
   		if (err) {
@@ -162,7 +161,6 @@ function addGoals(req, res){
     				if (err) {
       				return console.error('Error executing query', err.stack);
     				}
-			//res.json(result.rows);
 			return res.redirect('/addedGoals');
   		});
 	});	
