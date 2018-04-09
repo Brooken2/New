@@ -104,6 +104,7 @@ function handleCreateAccount(req, res){
 							console.log('error in the finding of username');
 						}else{
 							req.session.id = response.rows[0].id;
+							
 							res.send(result);
 						}
 					});
@@ -131,7 +132,9 @@ function handleLogout(req, res){
 
 
 function addnewGoals(req, res){
+	
 	console.log('Add Goals');
+	
 	var userid = req.session.id;
 	var username = req.session.username;
 	
@@ -146,60 +149,25 @@ function addnewGoals(req, res){
 	else {
 		pool.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ($1, $2, $3, $4)", params, (err) => {
 			console.log("did we make it in the query");
-		if(err){
-			result = {success: false};
-			res.send(result);
-			console.error('Error executing query', err.stack);
-		}
-		else{
-			if(req.body.goal != undefined){
-
-				result = {success: true};
+			if(err){
+				result = {success: false};
+				console.error('Error executing query', err.stack);
 				res.send(result);
 			}
 			else{
-				result ={success: false};
-				res.send(result);
+				if(req.body.goal != undefined){
+
+					result = {success: true};
+					console.log('we are about to send our result');
+					console.log(result)
+					res.send(result);
+				}
+				else{
+					result ={success: false};
+					res.send(result);
+				}
 			}
-		}
-	});
-		
-		/*
-		var params = [req.body.goal, req.body.endDate, req.body.description, userid];
-		console.log(req.body.goal, req.body.endDate, req.body.description, userid);
-		
-		pool.connect(function (err, client, release) {
-			
-			console.log("goal name is: " + params[0]);
-			
-			if (err) {
-				console.error('Error acquiring client', err.stack);
-			}
-			if(params[0] != undefined){
-				console.log("goal name is: " + params[0]);
-				
-				pool.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ($1, $2, $3, $4)", params, function (err, response) {
-					
-					if (err) {
-						
-						result = {success: false};
-						res.send(result);
-						console.error('Error executing query', err.stack);
-					
-					}else{
-						console.log('This is in my ADD GOALS');
-						result = {success: true};
-						
-						console.log(result);
-						
-						res.send(result);
-					}
-				});
-			}else{
-				result = {success: false};
-				res.send(result);
-			}
-		});	*/
+		});	
 	}
 }
 

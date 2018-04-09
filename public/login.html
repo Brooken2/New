@@ -20,6 +20,7 @@
 	<button id="btnCreate" class="btn btn-success" onclick="createUser()">Create New User</button>
 	<script>
 	$(document).ready(function(){
+		$("#goalPage").hide;
 		$("#btnLogin").click(function(){
 			if(typeof(Storage) !== "undefined"){
 				$("#loginHide").hide(1000);
@@ -73,8 +74,8 @@
 	<div id="div1"></div>
 	<div id="addingNew"></div>
 	<div id="addingNewGoals"></div>
+	<button id="btnCreate" class="btn btn-success" onclick="addGoals()">Add New Goals</button><br><br>
 	</div>
-</div>
 
 
 </body>

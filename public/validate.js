@@ -26,8 +26,6 @@ function createUser(){
 	var username = $("#username1").val();
 	var password = $("#password1").val();
 	var displayName = $("#displayName").val();
-
-	//console.log('We made it to the CreateUser() fucntion');
 	
 	var params = {
 		username: username,
@@ -37,7 +35,6 @@ function createUser(){
 
 	$.post("/createUser", params, function(result) {
 		if (result && result.success) {
-			//console.log('made it here');
 			redir();
 		} else {
 			$("#status").text("Error Creating User in.");
@@ -46,6 +43,7 @@ function createUser(){
 }
 
 function addGoals(){
+	console.log("Is this doing something");
 	var goal = $("#goal").val();
 	var endDate = $("#endDate").val();
 	var description = $("#description").val();
@@ -61,8 +59,27 @@ function addGoals(){
 	$.post("/addnewGoals", params, function(result){
 		console.log("i am not sure where we go wrong");
 		if (result && result.success) {
-			console.log('We made it Back into Add Goals in Validate.js');
-			redir2();
+			
+			redir();
+			/*var xmlhttp = new XMLHttpRequest();
+
+			xmlhttp.onreadystatechange = function() {
+				if (xmlhttp.readyState == XMLHttpRequest.DONE) {
+					if (xmlhttp.status == 200){ 
+					console.log("We are here in the REDIR");
+					console.log(this.responseText);
+					updatePage(this.responseText);
+					}
+					else if (xmlhttp.status == 400) {
+						alert('There was an error 400');
+					}
+					else {
+					alert('something else other than 200 was returned, Taylor says not 400 either, probs like 342');
+					}
+				}
+			}
+			xmlhttp.open("GET", "/getUser", true);
+			xmlhttp.send();	*/
 		} else {
 			$("#status").text("Error Creating new Goal in.");
 		}
@@ -118,15 +135,14 @@ function updatePage(results){
 	
 	var addGoal = 
 		"<div class='container'><h2>Add A New Goal</h2>"
-		+ "<form action='' onsubmit='addGoals()' method='post'>"
 		+ "<fieldset>" 
 		+ "<label for=endDate>End Date:</label>"
         + "<input type='date' class='form-control' id='endDate' name='endDate' placeholder='Select an end date for your goal'/>"
 		+ "<label for='goal'>Goal Name:</label>"
         + '<input type="text" class="form-control" id="goal" name="goal" placeholder="Enter your goals name" >'
 		+ "<label for='description'>Description:</label>"
-        + "<textarea id='description' class='form-control' id ='description' name='description' placeholder='What did you want to accomplish?'></textarea>"
-		+ "<input type='submit' class='btn btn-primary' value='Add Goal'/> </fieldset></form></div><br><br><br><br>";
+        + "<textarea id='description' class='form-control' id ='description' name='description' placeholder='What did you want to accomplish?'>"
+		+ "</textarea></fieldset></div>";
 	
 	document.getElementById("addingNewGoals").innerHTML = addGoal;
 	
