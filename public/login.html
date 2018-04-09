@@ -20,7 +20,7 @@
 	<button id="btnCreate" class="btn btn-success" onclick="createUser()">Create New User</button>
 	<script>
 	$(document).ready(function(){
-		$("#goalPage").hide;
+		$("#goalPage").hide(100);
 		$("#btnLogin").click(function(){
 			if(typeof(Storage) !== "undefined"){
 				$("#loginHide").hide(1000);
