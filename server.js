@@ -134,35 +134,32 @@ function addnewGoals(req, res){
 	console.log('Add Goals');
 	var userid = req.session.id;
 	var username = req.session.username;
-	console.log(username);
+	
+	var params = [req.body.goal, req.body.endDate, req.body.description, userid];
+		console.log(req.body.goal, req.body.endDate, req.body.description, userid);
+	
 	var result = {success: false};
 	
 	if (req.body.goal == undefined){
 		res.send("Goal Name Didnt Save");
 	}
 	else {
-		pool.query("SELECT id, username, password FROM users WHERE username = $1",[username], (err, response) => {
+		pool.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ($1, $2, $3, $4)", params, (err) => {
 			console.log("did we make it in the query");
 		if(err){
-			console.log('Error loggin in to the database');
-			res.send("error");
+			result = {success: false};
+			res.send(result);
+			console.error('Error executing query', err.stack);
 		}
-		else if(response){
-			if(req.body.username == response.rows[0].username){
-				bcrypt.compare(req.body.password, response.rows[0].password, function(err, goodPass){
-					console.log(goodPass);
-					if(goodPass == true){
-						console.log(response.rows[0].id);
-						result = {success: true};
-						req.session.user = req.body.username;
-						req.session.id = response.rows[0].id;
-						res.send(result);
-					}
-				});
+		else{
+			if(req.body.goal != undefined){
+
+				result = {success: true};
+				res.send(result);
 			}
 			else{
-					result ={success: false};
-					res.send(result);
+				result ={success: false};
+				res.send(result);
 			}
 		}
 	});
