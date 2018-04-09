@@ -44,12 +44,8 @@ app.set('views', __dirname + '/views');
 app.post('/login', handleLogin);
 app.post('/logout', handleLogout);
 app.post('/createUser', handleCreateAccount);
+app.post('/addnewGoals', addnewGoals);
 app.get('/getGoals', getGoals);
-app.post('/addGoals', addGoals);
-app.get('/addedGoals', function (req, res) {
-	
-	res.redirect('/login.html');
-});
 app.get('/getUser', getUser);
 
 app.listen(app.get('port'), function(){
@@ -134,28 +130,53 @@ function handleLogout(req, res){
 }
 
 
-function addGoals(req, res){
+function addnewGoals(req, res){
 	console.log('Add Goals');
 	var userid = req.session.id;
-	var result;
-	var params = [req.body.gname, req.body.endDate, req.body.desciption, userid];
-	pool.connect(function (err, client, release) {
-  		if (err) {
-  			console.error('Error acquiring client', err.stack);
-		}
- 		pool.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ($1, $2, $3, $4)", params, function (err, result) { //+ name + "', '" + endDate + "', '"  + des +"', '" +userid  + "')"  ,
-    				//client.release();
-    			if (err) {
-					result = {success: false};
-					res.send(result);
-      				console.error('Error executing query', err.stack);
-    			}
-			console.log('This is in my ADD GOALS');
-			result = {success: true};
-			res.send(result);
-			//res.redirect('/login');
-  		});
-	});	
+	var username = req.session.username;
+	console.log(username);
+	var result = {success: false};
+	if (req.body.goal == undefined){
+		res.send("Goal Name Didnt Save");
+	}
+	else {
+		
+		var params = [req.body.goal, req.body.endDate, req.body.description, userid];
+		console.log(req.body.goal, req.body.endDate, req.body.description, userid);
+		
+		pool.connect(function (err, client, release) {
+			
+			console.log("goal name is: " + params[0]);
+			
+			if (err) {
+				console.error('Error acquiring client', err.stack);
+			}
+			if(params[0] != undefined){
+				console.log("goal name is: " + params[0]);
+				
+				pool.query("INSERT INTO goals(goalname, enddate, description, userid) VALUES ($1, $2, $3, $4)", params, function (err, response) {
+					
+					if (err) {
+						
+						result = {success: false};
+						res.send(result);
+						console.error('Error executing query', err.stack);
+					
+					}else{
+						console.log('This is in my ADD GOALS');
+						result = {success: true};
+						
+						console.log(result);
+						
+						res.send(result);
+					}
+				});
+			}else{
+				result = {success: false};
+				res.send(result);
+			}
+		});	
+	}
 }
 
 function getUser(req, res){

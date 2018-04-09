@@ -2,9 +2,9 @@ function login() {
 	var username = $("#username").val();
 	var password = $("#password").val();
 
-	console.log('We made it to the login() fucntion');
-	console.log(username);
-	console.log(password);
+	//console.log('We made it to the login() fucntion');
+	//console.log(username);
+	//console.log(password);
 	
 	var params = {
 		username: username,
@@ -13,7 +13,7 @@ function login() {
 
 	$.post("/login", params, function(result) {
 		if (result && result.success) {
-			console.log('made it here');
+			//console.log('made it here');
 			redir();
 		} else {
 			$("#status").text("Error logging in.");
@@ -27,7 +27,7 @@ function createUser(){
 	var password = $("#password1").val();
 	var displayName = $("#displayName").val();
 
-	console.log('We made it to the CreateUser() fucntion');
+	//console.log('We made it to the CreateUser() fucntion');
 	
 	var params = {
 		username: username,
@@ -37,7 +37,7 @@ function createUser(){
 
 	$.post("/createUser", params, function(result) {
 		if (result && result.success) {
-			console.log('made it here');
+			//console.log('made it here');
 			redir();
 		} else {
 			$("#status").text("Error Creating User in.");
@@ -46,25 +46,34 @@ function createUser(){
 }
 
 function addGoals(){
-	var gname = $("#gname").val();
+	var goal = $("#goal").val();
 	var endDate = $("#endDate").val();
-	var desciption = $("#desciption").val();
+	var description = $("#description").val();
+	
+	//console.log(goal, endDate, description);
 	
 	var params = {
-		gname: gname,
+		goal: goal,
 		endDate: endDate,
-		desciption: desciption
+		description: description
 	};
 	
-	$.post("/addGoals", params, function(result){
+	$.post("/addnewGoals", params, function(result){
+		console.log("i am not sure where we go wrong");
 		if (result && result.success) {
-			console.log('made it here to add new goal');
-			redir();
+			console.log('We made it Back into Add Goals in Validate.js');
+			redir2();
 		} else {
 			$("#status").text("Error Creating new Goal in.");
 		}
 	});
 }
+
+function redir2(){
+		console.log("this is a new idea");
+}
+
+
 
 function redir(){
 	var xmlhttp = new XMLHttpRequest();
@@ -72,7 +81,7 @@ function redir(){
 	xmlhttp.onreadystatechange = function() {
 		if (xmlhttp.readyState == XMLHttpRequest.DONE) {
 			if (xmlhttp.status == 200){ 
-				console.log("we are here in the redir");
+				console.log("We are here in the REDIR");
 				console.log(this.responseText);
 				updatePage(this.responseText);
 			}
@@ -89,7 +98,7 @@ function redir(){
 }
 
 function updatePage(results){
-	console.log(results);
+	//console.log(results);
 	
 	var json = JSON.parse(results);
 	var listJson = JSON.parse(json);
@@ -109,15 +118,15 @@ function updatePage(results){
 	
 	var addGoal = 
 		"<div class='container'><h2>Add A New Goal</h2>"
-		+ "<form action='/addGoals' method='post'>"
+		+ "<form action='' onsubmit='addGoals()' method='post'>"
 		+ "<fieldset>" 
-		+ "<label for='gname'>Goal Name:</label>"
-        + "<input type='text' class='form-control' id='name' name='gname' placeholder='Enter your goals name' />"
 		+ "<label for=endDate>End Date:</label>"
         + "<input type='date' class='form-control' id='endDate' name='endDate' placeholder='Select an end date for your goal'/>"
-		+ "<label for='discription'>Description:</label>"
-        + "<textarea id='desciption' class='form-control'name='desciption' placeholder='What did you want to accomplish?'></textarea>"
-		+ "<input type='submit' class='btn btn-primary' value='Add Goal' /> </fieldset></form></div><br><br><br><br>";
+		+ "<label for='goal'>Goal Name:</label>"
+        + '<input type="text" class="form-control" id="goal" name="goal" placeholder="Enter your goals name" >'
+		+ "<label for='description'>Description:</label>"
+        + "<textarea id='description' class='form-control' id ='description' name='description' placeholder='What did you want to accomplish?'></textarea>"
+		+ "<input type='submit' class='btn btn-primary' value='Add Goal'/> </fieldset></form></div><br><br><br><br>";
 	
 	document.getElementById("addingNewGoals").innerHTML = addGoal;
 	
